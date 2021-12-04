@@ -1,5 +1,3 @@
-import java.util.*
-
 object Day4Part2Solver : Solver {
     private const val boardSize = 5
 
