@@ -1,27 +1,13 @@
+import java.util.*
+
 object Day4Part2Solver : Solver {
     private const val boardSize = 5
 
-    private enum class ParserState {
-        Numbers,
-        Empty,
-        Board
-    }
-
     private class Parser {
-        private var state: ParserState = ParserState.Empty
-
-        private val numbers: MutableList<Int> = mutableListOf()
+        private var numbers: MutableList<Int> = mutableListOf()
         private val boards: MutableList<Board> = mutableListOf()
 
         private val buffer: MutableList<List<Int>> = mutableListOf()
-
-        private fun parseNumbers(line: String) {
-            numbers.addAll(line.split(",").map(Integer::parseInt))
-        }
-
-        private fun parseBoardNumbers(line: String) {
-            buffer.add(line.split(" ").filter(String::isNotEmpty).map(Integer::parseInt))
-        }
 
         private fun flushBoard() {
             if (buffer.isEmpty()) {
@@ -35,19 +21,14 @@ object Day4Part2Solver : Solver {
 
         fun parse(input: Sequence<String>): Pair<List<Int>, List<Board>> {
             for (line in input) {
-                state =
-                    if (numbers.isEmpty()) {
-                        ParserState.Numbers
-                    } else if (line.isEmpty()) {
-                        ParserState.Empty
-                    } else {
-                        ParserState.Board
-                    }
+                if (numbers.isEmpty()) {
+                    numbers.addAll(line.split(",").map(Integer::parseInt))
+                } else if (line.isEmpty()) {
+                    flushBoard()
+                } else {
+                    val row = line.split(" ").filter(String::isNotEmpty).map(Integer::parseInt)
 
-                when (state) {
-                    ParserState.Numbers -> parseNumbers(line)
-                    ParserState.Empty -> flushBoard()
-                    ParserState.Board -> parseBoardNumbers(line)
+                    buffer.add(row)
                 }
             }
 
@@ -57,10 +38,8 @@ object Day4Part2Solver : Solver {
         }
     }
 
-    private data class BoardCell(val rowIndex: Int, val columnIndex: Int, val seen: Boolean)
-
     private class Board(input: List<List<Int>>) {
-        private val numbers: MutableMap<Int, BoardCell> = mutableMapOf()
+        private val cells: MutableMap<Int, Pair<Int, Int>> = mutableMapOf()
 
         private val rows: Array<Int> = Array(boardSize) { 0 }
         private val columns: Array<Int> = Array(boardSize) { 0 }
@@ -68,34 +47,21 @@ object Day4Part2Solver : Solver {
         init {
             for ((rowIndex, row) in input.withIndex()) {
                 for ((columnIndex, number) in row.withIndex()) {
-                    numbers[number] = BoardCell(rowIndex, columnIndex, false)
+                    cells[number] = Pair(rowIndex, columnIndex)
                 }
             }
         }
 
         fun mark(number: Int): Boolean {
-            val (rowIndex, columnIndex) = numbers[number] ?: return false
+            val (rowIndex, columnIndex) = cells.remove(number) ?: return false
 
             rows[rowIndex] += 1
             columns[columnIndex] += 1
 
-            numbers[number] = BoardCell(rowIndex, columnIndex, true)
-
             return rows[rowIndex] == boardSize || columns[columnIndex] == boardSize
         }
 
-        fun scoreFor(calledNumber: Int): Int {
-            val sumOfUnseen =
-                numbers.entries.fold(0) { sum, (number, cell) ->
-                    if (cell.seen) {
-                        sum
-                    } else {
-                        sum + number
-                    }
-                }
-
-            return sumOfUnseen * calledNumber
-        }
+        fun scoreFor(calledNumber: Int): Int = cells.keys.sum() * calledNumber
     }
 
     override fun solve(input: Sequence<String>): String {
