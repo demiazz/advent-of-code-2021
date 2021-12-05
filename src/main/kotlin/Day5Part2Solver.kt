@@ -15,22 +15,16 @@ object Day5Part2Solver : Solver {
 
                     (fromX..toX).asSequence().map { Pair(it, y1) }
                 } else {
-                    sequence<Pair<Int, Int>> {
-                        var x = x1
-                        var y = y1
-
-                        val stepX = if (x1 < x2) 1 else -1
-                        val stepY = if (y1 < y2) 1 else -1
-
-                        while (x != x2 && y != y2) {
-                            val point = Pair(x, y)
-
-                            yield(point)
-
-                            x += stepX
-                            y += stepY
+                    val (fromX, fromY, toX, toY, stepY) =
+                        if (x1 < x2) {
+                            listOf(x1, y1, x2 + 1, y2, if (y1 < y2) 1 else -1)
+                        } else {
+                            listOf(x2, y2, x1 + 1, y1, if (y2 < y1) 1 else -1)
                         }
-                    }
+                    val x = generateSequence(fromX) { if (it != toX) it + 1 else null }
+                    val y = generateSequence(fromY) { if (it != toY) it + stepY else null}
+
+                    x.zip(y)
                 }
 
             for ((x, y) in coordinates) {
