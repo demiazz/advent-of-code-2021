@@ -24,14 +24,14 @@ object Day5Part2Solver : Solver {
                     val fromY = y1.coerceAtMost(y2)
                     val toY = y1.coerceAtLeast(y2)
 
-                    (fromY..toY).asSequence().map { Pair(x1, it) }
+                    (fromY..toY).map { Pair(x1, it) }.iterator()
                 } else if (y1 == y2) {
                     val fromX = x1.coerceAtMost(x2)
                     val toX = x1.coerceAtLeast(x2)
 
-                    (fromX..toX).asSequence().map { Pair(it, y1) }
+                    (fromX..toX).map { Pair(it, y1) }.iterator()
                 } else {
-                    CoordinatesIterator(x1, y1, x2, y2).asSequence()
+                    CoordinatesIterator(x1, y1, x2, y2)
                 }
 
             for ((x, y) in coordinates) {

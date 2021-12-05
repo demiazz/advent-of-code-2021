@@ -10,23 +10,21 @@ val solversByDays =
     )
 
 fun main() {
-//    val min = solversByDays.keys.minOrNull()!!
-//    val max = solversByDays.keys.maxOrNull()!!
-//
-//    print("Select a day: ")
-//
-//    val day = readLine()?.toInt()
-//
-//    if (day == null || day < min || day > max) {
-//        println("Please, select day between $min and $max")
-//
-//        exitProcess(1)
-//    }
-//
-//    val solvers = solversByDays[day]!!
-//
-//    println(solvers.first.solve(Utils.getInputFor(day)))
-//    println(solvers.second.solve(Utils.getInputFor(day)))
+    val min = solversByDays.keys.minOrNull()!!
+    val max = solversByDays.keys.maxOrNull()!!
 
-    println(Day5Part2Solver.solve(Utils.getInputFor(5)))
+    print("Select a day: ")
+
+    val day = readLine()?.toInt()
+
+    if (day == null || day < min || day > max) {
+        println("Please, select day between $min and $max")
+
+        exitProcess(1)
+    }
+
+    val solvers = solversByDays[day]!!
+
+    println(solvers.first.solve(Utils.getInputFor(day)))
+    println(solvers.second.solve(Utils.getInputFor(day)))
 }
