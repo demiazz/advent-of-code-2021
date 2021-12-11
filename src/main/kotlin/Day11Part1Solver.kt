@@ -9,44 +9,17 @@ object Day11Part1Solver : Solver {
         private val height = energy.size
         private val width = if (energy.isNotEmpty()) energy.first().size else 0
 
+        private val count = width * height
+
         private fun adjacent(current: Point): Sequence<Point> = sequence {
-            val (x, y) = current
+            for (x in (current.x - 1)..(current.x + 1)) {
+                for (y in (current.y - 1)..(current.y + 1)) {
+                    if (current.x == x && current.y == y) continue
 
-            val isNotLeft = x > 0
-            val isNotRight = x < (width - 1)
+                    if (x < 0 || x > (width - 1)) continue
+                    if (y < 0 || y > (height - 1)) continue
 
-            val isNotTop = y > 0
-            val isNotBottom = y < (height - 1)
-
-            if (isNotTop) {
-                if (isNotLeft) {
-                    yield(Point(x - 1, y - 1))
-                }
-
-                yield(Point(x, y - 1))
-
-                if (isNotRight) {
-                    yield(Point(x + 1, y - 1))
-                }
-            }
-
-            if (isNotLeft) {
-                yield(Point(x - 1, y))
-            }
-
-            if (isNotRight) {
-                yield(Point(x + 1, y))
-            }
-
-            if (isNotBottom) {
-                if (isNotLeft) {
-                    yield(Point(x - 1, y + 1))
-                }
-
-                yield(Point(x, y + 1))
-
-                if (isNotRight) {
-                    yield(Point(x + 1, y + 1))
+                    yield(Point(x, y))
                 }
             }
         }
@@ -85,9 +58,7 @@ object Day11Part1Solver : Solver {
             while (willFlash.isNotEmpty()) {
                 val current = willFlash.remove()
 
-                if (isFlashed(current)) {
-                    continue
-                }
+                if (isFlashed(current)) continue
 
                 reset(current)
 
