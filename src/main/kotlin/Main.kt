@@ -12,6 +12,7 @@ val solversByDays =
         8 to Pair(Day8Part1Solver, Day8Part2Solver),
         9 to Pair(Day9Part1Solver, Day9Part2Solver),
         10 to Pair(Day10Part1Solver, Day10Part2Solver),
+        11 to Pair(Day11Part1Solver, Day11Part2Solver),
     )
 
 fun main() {
