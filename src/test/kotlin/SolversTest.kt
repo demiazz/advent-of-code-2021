@@ -169,4 +169,18 @@ class SolversTest {
 
         assertEquals("36", Day12Part2Solver.solve(input))
     }
+
+    @Test
+    fun testDay13Part1Solver() {
+        val input = Utils.getInputFor(13)
+
+        assertEquals("17", Day13Part1Solver.solve(input))
+    }
+
+    @Test
+    fun testDay13Part2Solver() {
+        val input = Utils.getInputFor(13)
+
+        assertEquals("0", Day13Part2Solver.solve(input))
+    }
 }
