@@ -183,4 +183,18 @@ class SolversTest {
 
         assertEquals("0", Day13Part2Solver.solve(input))
     }
+
+    @Test
+    fun testDay14Part1Solver() {
+        val input = Utils.getInputFor(14)
+
+        assertEquals("1588", Day14Part1Solver.solve(input))
+    }
+
+    @Test
+    fun testDay14Part2Solver() {
+        val input = Utils.getInputFor(14)
+
+        assertEquals("2188189693529", Day14Part2Solver.solve(input))
+    }
 }
